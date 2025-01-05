@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Web Client</title>
+</head>
+<body>
+    <h1>WhatsApp Web Client</h1>
+    <p>Scan QR Code:</p>
+    <div id="qr-container"></div>
+    <div id="status"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io(); // Menginisialisasi koneksi Socket.IO
+
+        // Event ketika koneksi berhasil
+        socket.on('connect', () => {
+            console.log('Terhubung ke server Socket.IO!');
+        });
+
+        // Event ketika QR code diterima dari server
+        socket.on('qr', (qrData) => {
+            const qrContainer = document.getElementById('qr-container');
+            qrContainer.innerHTML = `<img src="${qrData}" alt="QR Code" />`;
+        });
+
+        // Event ketika WhatsApp Client siap
+        socket.on('ready', (message) => {
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = message;
+        });
+    </script>
+</body>
+</html>
