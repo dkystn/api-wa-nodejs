@@ -4,12 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WhatsApp Web Client</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+        }
+        .qr-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .qr-container img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+        .status {
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #007bff;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>WhatsApp Web Client</h1>
-    <p>Scan QR Code:</p>
-    <div id="qr-container"></div>
-    <div id="status"></div>
+
+    <div class="container">
+        <div class="card">
+            <h1>WhatsApp Web Client</h1>
+            <p class="text-center text-muted">Scan the QR Code to connect</p>
+
+            <div id="qr-container" class="qr-container"></div>
+            <div id="status" class="status"></div>
+            <div id="connection-status" class="text-center mt-3 text-muted"></div>
+        </div>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -18,6 +64,10 @@
         // Event ketika koneksi berhasil
         socket.on('connect', () => {
             console.log('Terhubung ke server Socket.IO!');
+            // Menampilkan pesan di tampilan
+            const connectionStatus = document.getElementById('connection-status');
+            connectionStatus.textContent = 'Terhubung ke server Socket.IO!';
+            connectionStatus.style.color = '#007bff'; // Warna biru untuk status terkoneksi
         });
 
         // Event ketika QR code diterima dari server
@@ -30,7 +80,9 @@
         socket.on('ready', (message) => {
             const statusElement = document.getElementById('status');
             statusElement.textContent = message;
+            statusElement.style.color = '#28a745'; // Hijau untuk status siap
         });
     </script>
+
 </body>
 </html>
